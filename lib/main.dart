@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:green_house/presentation/screens/home_screen.dart';
+import 'package:green_house/presentation/screens/welcome_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'bussiness_logic/auth.dart';
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
           home:
               //  auth.isAuth
               // ?
-              const HomeScreen()
+              const WelcomeScreen()
           // : FutureBuilder(
           //     future: auth.tryAutoLogin(),
           //     builder: (ctx, authResultSnapshot) =>
