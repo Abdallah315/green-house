@@ -8,11 +8,7 @@ class Auth with ChangeNotifier {
   String? _token;
 
   bool get isAuth {
-    return token != null;
-  }
-
-  String? get token {
-    return _token;
+    return _token != null;
   }
 
   Future<void> register(
@@ -110,7 +106,7 @@ class Auth with ChangeNotifier {
   Future<bool> tryAutoLogin() async {
     final prefs = await SharedPreferences.getInstance();
     // print(!prefs.containsKey('userData') && _token != null);
-    if (!prefs.containsKey('userData') && token != null) {
+    if (!prefs.containsKey('userData') && _token != null) {
       return false;
     }
     final extractedData =
@@ -118,6 +114,18 @@ class Auth with ChangeNotifier {
     _token = extractedData['token'];
     notifyListeners();
     return true;
+  }
+
+  Future<String> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('userData')) {
+      return "";
+    }
+    final extractedData =
+        json.decode(prefs.getString('userData')!) as Map<String, dynamic>;
+    _token = extractedData['token'];
+    notifyListeners();
+    return _token!;
   }
 
   Future<void> logout() async {
