@@ -84,7 +84,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 }
 
 class WelcomeStep1 extends Step {
-  WelcomeStep1({Key? key, onNext, onSkip, currentPage})
+  const WelcomeStep1({Key? key, onNext, onSkip, currentPage})
       : super(
             key: key,
             onNext: onNext,
@@ -97,7 +97,7 @@ class WelcomeStep1 extends Step {
 }
 
 class WelcomeStep2 extends Step {
-  WelcomeStep2({Key? key, onNext, onSkip, currentPage})
+  const WelcomeStep2({Key? key, onNext, onSkip, currentPage})
       : super(
             key: key,
             onNext: onNext,
@@ -110,7 +110,7 @@ class WelcomeStep2 extends Step {
 }
 
 class WelcomeStep3 extends Step {
-  WelcomeStep3({Key? key, onNext, onSkip, currentPage})
+  const WelcomeStep3({Key? key, onNext, onSkip, currentPage})
       : super(
             key: key,
             onNext: onNext,
@@ -128,9 +128,9 @@ class Step extends StatelessWidget {
   final String? backgroundImage;
   final String? title;
   final String? subtitle;
-  int? currentPage;
+  final int? currentPage;
 
-  Step(
+  const Step(
       {super.key,
       this.onNext,
       this.onSkip,

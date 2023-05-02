@@ -40,6 +40,8 @@ dependencies:
   shared_preferences:
   carousel_slider:
   flutter_svg: ^1.1.1
+  persistent_bottom_nav_bar: ^5.0.1
+  font_awesome_flutter: ^10.4.0
 
 dev_dependencies:
   flutter_test:

@@ -9,5 +9,6 @@ double getHeight(BuildContext context) {
 }
 
 Color myYellow = const Color(0xffcaa601);
-Color myGreen = const Color(0xff3C4F22);
+Color myLightGreen = const Color(0xff6EA035);
+Color myDarkGreen = const Color(0xff1F3724);
 Color myDarkYellow = const Color.fromRGBO(202, 166, 1, 0.4);
