@@ -29,7 +29,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   void _goToLoginScreen() {
-    Navigator.of(context).pushNamed(AuthScreen.routName);
+    Navigator.of(context).pushReplacementNamed(AuthScreen.routName);
   }
 
   Widget currentStep(int i) {

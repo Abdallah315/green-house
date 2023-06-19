@@ -4,6 +4,8 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../presentation/widgets/app_popup.dart';
+
 class Auth with ChangeNotifier {
   String? _token;
 
@@ -20,8 +22,7 @@ class Auth with ChangeNotifier {
       required String email,
       required String password,
       required String confirmPassword}) async {
-    final url =
-        Uri.parse('https://sfc-final-project.herokuapp.com/users/register');
+    final url = Uri.parse('https://sfc.onrender.com/users/register');
 
     try {
       print({
@@ -60,14 +61,14 @@ class Auth with ChangeNotifier {
         final prefs = await SharedPreferences.getInstance();
         final userData = json.encode({'token': _token});
         prefs.setString('userData', userData);
-        Navigator.of(context).pop();
+        // Navigator.of(context).pop();
       } else {
         print(responseData['error']);
         // AppPopup.showMyDialog(
         //     context, (responseData['error'] as List<dynamic>?)?.first);
       }
     } catch (e) {
-      print(e);
+      AppPopup.showMyDialog(context, e.toString());
     }
   }
 
@@ -75,8 +76,7 @@ class Auth with ChangeNotifier {
       {required BuildContext context,
       required String email,
       required String password}) async {
-    final url =
-        Uri.parse('https://sfc-final-project.herokuapp.com/users/login');
+    final url = Uri.parse('https://sfc.onrender.com/users/login');
 
     try {
       final resposne = await http.post(url,
@@ -93,13 +93,12 @@ class Auth with ChangeNotifier {
         final prefs = await SharedPreferences.getInstance();
         final userData = json.encode({'token': _token});
         prefs.setString('userData', userData);
-        tryAutoLogin();
-        Navigator.of(context).pop();
+        // Navigator.of(context).pop();
       } else {
         print(responseData['error']);
       }
     } catch (e) {
-      print(e);
+      AppPopup.showMyDialog(context, e.toString());
     }
   }
 

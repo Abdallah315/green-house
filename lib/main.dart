@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:green_house/presentation/screens/bottom_nav_bar.dart';
 import 'package:green_house/presentation/screens/welcome_screen.dart';
+import 'package:green_house/store/farms.dart';
+import 'package:green_house/utils/constants.dart';
 import 'package:provider/provider.dart';
 
-import 'bussiness_logic/auth.dart';
+import 'store/auth.dart';
 import 'utils/routes.dart';
 
 void main() {
@@ -20,25 +23,25 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Auth(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => FarmStore(),
+        )
       ],
       child: Consumer<Auth>(
         builder: (context, auth, _) => MaterialApp(
           title: 'Flutter Demo',
-          home:
-              //  auth.isAuth
-              // ?
-              const WelcomeScreen()
-          // : FutureBuilder(
-          //     future: auth.tryAutoLogin(),
-          //     builder: (ctx, authResultSnapshot) =>
-          //         authResultSnapshot.connectionState ==
-          //                 ConnectionState.waiting
-          //             ? CircularProgressIndicator(
-          //                 color: myGreen,
-          //               )
-          //             : const WelcomeScreen(),
-          //   ),
-          ,
+          home: auth.isAuth
+              ? const BottomNavBarScreen()
+              : FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (ctx, authResultSnapshot) =>
+                      authResultSnapshot.connectionState ==
+                              ConnectionState.waiting
+                          ? CircularProgressIndicator(
+                              color: myDarkGreen,
+                            )
+                          : const WelcomeScreen(),
+                ),
           routes: routes,
         ),
       ),
