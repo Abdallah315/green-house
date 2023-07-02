@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:green_house/presentation/screens/add_farm_screen.dart';
 import 'package:green_house/presentation/screens/info_screen.dart';
 import 'package:green_house/store/auth.dart';
 import 'package:green_house/store/farms.dart';
+import 'package:green_house/store/user_store.dart';
 import 'package:green_house/utils/constants.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
@@ -17,29 +19,34 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-
+class _HomeScreenState extends State<HomeScreen> {
   bool isloading = false;
 
   @override
   void initState() {
     super.initState();
+    Provider.of<Auth>(context, listen: false)
+        .getToken()
+        .then((value) => print(value));
     getAllUserFarms();
   }
 
   void getAllUserFarms() async {
     isloading = true;
     String token = await Provider.of<Auth>(context, listen: false).getToken();
+    if (!mounted) return;
+    context.read<UserStore>().getUserData(context, token);
     Provider.of<FarmStore>(context, listen: false)
         .getAllFarms(context, token)
-        .then((value) {
-      setState(() {
-        isloading = false;
-      });
-    });
+        .whenComplete(
+      () {
+        setState(
+          () {
+            isloading = false;
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -76,12 +83,16 @@ class _HomeScreenState extends State<HomeScreen>
                       children: [
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Hello ,User',
-                            style: TextStyle(
-                                color: myYellow,
-                                fontSize: 23,
-                                fontWeight: FontWeight.w700),
+                          child: Consumer<UserStore>(
+                            builder: (context, userStore, child) {
+                              return Text(
+                                'Hello , ${userStore.userName}',
+                                style: TextStyle(
+                                    color: myYellow,
+                                    fontSize: 23,
+                                    fontWeight: FontWeight.w700),
+                              );
+                            },
                           ),
                         ),
                         SizedBox(
@@ -100,9 +111,9 @@ class _HomeScreenState extends State<HomeScreen>
                                   borderRadius: BorderRadius.circular(25),
                                   borderSide: BorderSide(
                                       color: Colors.white.withOpacity(.45))),
-                              hintText: 'First Name',
+                              hintText: 'Search',
                               prefixIcon: Icon(
-                                Icons.person_outline,
+                                Icons.search,
                                 color: myDarkGreen,
                                 size: 28,
                               ),
@@ -113,9 +124,6 @@ class _HomeScreenState extends State<HomeScreen>
                                       color: Colors.white.withOpacity(.45))),
                             ),
                             validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Invalid Name';
-                              }
                               return null;
                             },
                             onSaved: (value) {
@@ -149,23 +157,58 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                   ),
                 ),
-                Positioned(
-                  top: 200,
-                  child: SizedBox(
-                      width: getWidth(context),
-                      height: getHeight(context) * .65,
-                      child: Consumer<FarmStore>(
-                          builder: (context, farmStore, child) {
-                        return ListView.builder(
-                          itemBuilder: (context, index) {
-                            Farm farm = farmStore.allFarms[index];
-                            return buildFarmComponent(context, farm.name,
-                                farm.plants.length.toString());
-                          },
-                          itemCount: farmStore.allFarms.length,
-                        );
-                      })),
-                )
+                context.read<FarmStore>().allFarms.isEmpty
+                    ? Positioned(
+                        top: 210,
+                        right: 35,
+                        child: GestureDetector(
+                          onTap: () => PersistentNavBarNavigator.pushNewScreen(
+                              context,
+                              screen: const AddFarmScreen(),
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino),
+                          child: Container(
+                              width: getWidth(context) * .8,
+                              height: getHeight(context) * .29,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: Colors.white),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    size: 180,
+                                    color: Colors.grey.shade400,
+                                  ),
+                                  Text(
+                                    'Add Farm',
+                                    style: TextStyle(
+                                        color: Colors.grey.shade400,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700),
+                                  )
+                                ],
+                              )),
+                        ),
+                      )
+                    : Positioned(
+                        top: 200,
+                        child: SizedBox(
+                            width: getWidth(context),
+                            height: getHeight(context) * .65,
+                            child: Consumer<FarmStore>(
+                                builder: (context, farmStore, child) {
+                              return ListView.builder(
+                                itemBuilder: (context, index) {
+                                  Farm farm = farmStore.allFarms[index];
+                                  return buildFarmComponent(context, farm.name,
+                                      farm.plants.length.toString());
+                                },
+                                itemCount: farmStore.allFarms.length,
+                              );
+                            })),
+                      )
               ]
             ],
           ),
@@ -177,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen>
     return GestureDetector(
       onTap: () => PersistentNavBarNavigator.pushNewScreen(context,
           screen: const InfoScreen(),
-          pageTransitionAnimation: PageTransitionAnimation.sizeUp),
+          pageTransitionAnimation: PageTransitionAnimation.cupertino),
       child: Column(
         children: [
           Image.asset('assets/images/photo.png'),

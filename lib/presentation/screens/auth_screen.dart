@@ -212,7 +212,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                         fontWeight: FontWeight.bold,
                                         color: lastName.hasFocus
                                             ? Colors.black.withOpacity(0.9)
-                                            : myDarkGreen),
+                                            : Colors.white),
                                     decoration: InputDecoration(
                                       filled: true,
                                       fillColor: Colors.white.withOpacity(.45),
@@ -263,7 +263,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 fontWeight: FontWeight.bold,
                                 color: emailFocus.hasFocus
                                     ? Colors.black.withOpacity(0.9)
-                                    : myDarkGreen),
+                                    : Colors.white),
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                               filled: true,
@@ -312,7 +312,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   fontWeight: FontWeight.bold,
                                   color: phoneNumber.hasFocus
                                       ? Colors.black.withOpacity(0.9)
-                                      : myDarkGreen),
+                                      : Colors.white),
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
                                 filled: true,
@@ -361,7 +361,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   fontWeight: FontWeight.bold,
                                   color: country.hasFocus
                                       ? Colors.black.withOpacity(0.9)
-                                      : myDarkGreen),
+                                      : Colors.white),
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
                                 filled: true,
@@ -409,7 +409,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 fontWeight: FontWeight.bold,
                                 color: passwordFocus.hasFocus
                                     ? Colors.black.withOpacity(0.9)
-                                    : myDarkGreen),
+                                    : Colors.white),
                             controller: _passwordController,
                             decoration: InputDecoration(
                               filled: true,
@@ -458,7 +458,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   fontWeight: FontWeight.bold,
                                   color: confirmPasswordFocus.hasFocus
                                       ? Colors.black.withOpacity(0.9)
-                                      : myDarkGreen),
+                                      : Colors.white),
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: Colors.white.withOpacity(.45),

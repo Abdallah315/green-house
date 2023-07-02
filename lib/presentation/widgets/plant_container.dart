@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 import '../../utils/constants.dart';
 
 class PlantContainer extends StatelessWidget {
-  Plant plant;
-  PlantContainer({super.key, required this.plant});
+  final Plant plant;
+  const PlantContainer({super.key, required this.plant});
 
   @override
   Widget build(BuildContext context) {

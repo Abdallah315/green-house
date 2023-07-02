@@ -24,7 +24,7 @@ class FarmStore with ChangeNotifier {
   Future<void> getAllFarms(BuildContext context, String token) async {
     try {
       Response response = await get(
-        Uri.parse('$baseUrl/farms'),
+        Uri.parse('$baseUrl/farms/getEverythingAboutUserFarms'),
         headers: {'Authorization': 'Bearer $token'},
       );
       print(response.body);
@@ -32,8 +32,8 @@ class FarmStore with ChangeNotifier {
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
 
-        _allFarms =
-            List<Farm>.from(responseData.map((farm) => Farm.fromJson(farm)));
+        _allFarms = List<Farm>.from(
+            responseData['farms'].map((farm) => Farm.fromJson(farm)));
         notifyListeners();
       }
     } catch (e) {
@@ -56,6 +56,32 @@ class FarmStore with ChangeNotifier {
         "serialNumber": serialNumber,
         "plantName": plantName,
         "plant_count": plantsCount
+      });
+      print(response.body);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      AppPopup.showMyDialog(context, e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> addFarm({
+    required BuildContext context,
+    required String farmName,
+    required String serialNumber,
+    required String token,
+  }) async {
+    try {
+      Response response =
+          await put(Uri.parse('$baseUrl/plants/addPlantToFarm'), headers: {
+        'Authorization': 'Bearer $token'
+      }, body: {
+        "serialNumber": serialNumber,
+        "name": farmName,
       });
       print(response.body);
       if (response.statusCode == 200) {

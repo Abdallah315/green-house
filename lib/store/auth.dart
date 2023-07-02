@@ -64,8 +64,8 @@ class Auth with ChangeNotifier {
         // Navigator.of(context).pop();
       } else {
         print(responseData['error']);
-        // AppPopup.showMyDialog(
-        //     context, (responseData['error'] as List<dynamic>?)?.first);
+        AppPopup.showMyDialog(
+            context, (responseData['error'] as List<dynamic>?)?.first);
       }
     } catch (e) {
       AppPopup.showMyDialog(context, e.toString());
@@ -105,11 +105,11 @@ class Auth with ChangeNotifier {
   Future<bool> tryAutoLogin() async {
     final prefs = await SharedPreferences.getInstance();
     // print(!prefs.containsKey('userData') && _token != null);
-    if (!prefs.containsKey('userData') && _token != null) {
+    if (!prefs.containsKey('userData') && _token == null) {
       return false;
     }
     final extractedData =
-        json.decode(prefs.getString('userData')!) as Map<String, dynamic>;
+        json.decode(prefs.getString('userData') ?? '') as Map<String, dynamic>;
     _token = extractedData['token'];
     notifyListeners();
     return true;
@@ -128,20 +128,12 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> logout() async {
-    final url =
-        Uri.parse('https://sfc-final-project.herokuapp.com/users/logout');
     try {
-      final response = await http.get(url);
       // final responseData = json.decode(response.body);
-      if (response.statusCode == 200) {
-        _token = null;
-        notifyListeners();
-        final prefs = await SharedPreferences.getInstance();
-        prefs.clear();
-      } else {
-        // AppPopup.showMyDialog(
-        //     context, (responseData['error'] as List<dynamic>?)?.first);
-      }
+      _token = null;
+      notifyListeners();
+      final prefs = await SharedPreferences.getInstance();
+      prefs.clear();
     } catch (e) {
       rethrow;
     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:green_house/presentation/screens/bottom_nav_bar.dart';
 import 'package:green_house/presentation/screens/welcome_screen.dart';
 import 'package:green_house/store/farms.dart';
+import 'package:green_house/store/user_store.dart';
 import 'package:green_house/utils/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +26,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => FarmStore(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => UserStore(),
         )
       ],
       child: Consumer<Auth>(

@@ -8,20 +8,18 @@ import 'package:green_house/store/farms.dart';
 import 'package:green_house/utils/constants.dart';
 import 'package:provider/provider.dart';
 
-class AddPlantToFarmScreen extends StatefulWidget {
-  const AddPlantToFarmScreen({Key? key}) : super(key: key);
-  static const routName = '/add-plant-screen';
+class AddFarmScreen extends StatefulWidget {
+  const AddFarmScreen({Key? key}) : super(key: key);
 
   @override
-  State<AddPlantToFarmScreen> createState() => _AddPlantToFarmScreenState();
+  State<AddFarmScreen> createState() => _AddFarmScreenState();
 }
 
-class _AddPlantToFarmScreenState extends State<AddPlantToFarmScreen> {
+class _AddFarmScreenState extends State<AddFarmScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final Map<String, String> _authData = {
     'name': '',
     'serialNumber': '',
-    'plantsCount': ''
   };
   bool _isLoading = false;
 
@@ -37,16 +35,15 @@ class _AddPlantToFarmScreenState extends State<AddPlantToFarmScreen> {
       print(_authData);
       String token = await Provider.of<Auth>(context, listen: false).getToken();
       await Provider.of<FarmStore>(context, listen: false)
-          .addPlantToFarm(
+          .addFarm(
               context: context,
-              plantName: _authData['name'].toString(),
+              farmName: _authData['name'].toString(),
               serialNumber: _authData['serialNumber'].toString(),
-              plantsCount: _authData['plantsCount'].toString(),
               token: token)
           .then((value) {
         if (value) {
           Provider.of<FarmStore>(context, listen: false)
-              .getAllFarmPlants(context, token, _authData['serialNumber']!)
+              .getAllFarms(context, token)
               .then((value) {
             setState(() {
               _isLoading = false;
@@ -109,7 +106,7 @@ class _AddPlantToFarmScreenState extends State<AddPlantToFarmScreen> {
                                   borderSide: const BorderSide(
                                     width: 3,
                                   )),
-                              hintText: 'Plant Name',
+                              hintText: 'Farm Name',
                               prefixIcon: Icon(
                                 Icons.email,
                                 color: myDarkGreen,
@@ -124,7 +121,7 @@ class _AddPlantToFarmScreenState extends State<AddPlantToFarmScreen> {
                             ),
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return 'please enter the plant name';
+                                return 'please enter the farm name';
                               }
                               return null;
                             },
@@ -172,45 +169,6 @@ class _AddPlantToFarmScreenState extends State<AddPlantToFarmScreen> {
                             },
                           ),
                           SizedBox(
-                            height: getHeight(context) * 0.02,
-                          ),
-                          TextFormField(
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: myDarkGreen),
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white.withOpacity(.45),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                  borderSide: const BorderSide(
-                                    width: 3,
-                                  )),
-                              hintText: 'Plants Count',
-                              prefixIcon: Icon(
-                                Icons.email,
-                                color: myDarkGreen,
-                                size: 28,
-                              ),
-                              hintStyle: TextStyle(color: myDarkGreen),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                  borderSide: const BorderSide(
-                                    width: 0,
-                                  )),
-                            ),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'please fill the field';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _authData['plantsCount'] = value.toString();
-                            },
-                          ),
-                          SizedBox(
                             height: getHeight(context) * 0.1,
                           ),
                           if (_isLoading)
@@ -227,7 +185,7 @@ class _AddPlantToFarmScreenState extends State<AddPlantToFarmScreen> {
                                     color: myYellow),
                                 child: const Center(
                                   child: Text(
-                                    'Add Plant',
+                                    'Add Farm',
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 25,
