@@ -68,6 +68,8 @@ class FarmStore with ChangeNotifier {
       if (response.statusCode == 200) {
         return true;
       } else {
+        AppPopup.showMyDialog(context, response.body.toString());
+
         return false;
       }
     } catch (e) {
@@ -94,6 +96,8 @@ class FarmStore with ChangeNotifier {
       if (response.statusCode == 200) {
         return true;
       } else {
+        AppPopup.showMyDialog(context, response.body.toString());
+
         return false;
       }
     } catch (e) {
@@ -117,6 +121,8 @@ class FarmStore with ChangeNotifier {
         _allPlants = List<Plant>.from(
             responseData.map((plant) => Plant.fromJson(plant)));
         notifyListeners();
+      } else {
+        AppPopup.showMyDialog(context, response.body.toString());
       }
     } catch (e) {
       AppPopup.showMyDialog(context, e.toString());
@@ -131,9 +137,9 @@ class FarmStore with ChangeNotifier {
         body: {"serialNumber": serialNumber},
         headers: {'Authorization': 'Bearer $token'},
       );
-      print(response.body);
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
+        // print(responseData.last);
 
         _sensorsReadings = responseData.isEmpty
             ? SensorsReadings(
@@ -147,7 +153,7 @@ class FarmStore with ChangeNotifier {
                 tPh: 0,
                 tTemp: 0,
                 tWaterLvl: 0)
-            : SensorsReadings.fromJson(responseData.first);
+            : SensorsReadings.fromJson(responseData.last);
         notifyListeners();
       }
     } catch (e) {

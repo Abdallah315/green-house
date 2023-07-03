@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:green_house/presentation/screens/bottom_nav_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -56,7 +57,9 @@ class Auth with ChangeNotifier {
       if (resposne.statusCode == 201) {
         _token = responseData['token'];
         notifyListeners();
-        print(_token);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => BottomNavBarScreen(),
+        ));
 
         final prefs = await SharedPreferences.getInstance();
         final userData = json.encode({'token': _token});
@@ -89,6 +92,9 @@ class Auth with ChangeNotifier {
       final responseData = json.decode(resposne.body);
       if (resposne.statusCode == 200) {
         _token = responseData['token'];
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => BottomNavBarScreen(),
+        ));
         notifyListeners();
         final prefs = await SharedPreferences.getInstance();
         final userData = json.encode({'token': _token});
@@ -105,7 +111,7 @@ class Auth with ChangeNotifier {
   Future<bool> tryAutoLogin() async {
     final prefs = await SharedPreferences.getInstance();
     // print(!prefs.containsKey('userData') && _token != null);
-    if (!prefs.containsKey('userData') && _token == null) {
+    if (!prefs.containsKey('userData') && _token != null) {
       return false;
     }
     final extractedData =

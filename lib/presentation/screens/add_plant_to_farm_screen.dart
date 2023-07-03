@@ -51,12 +51,12 @@ class _AddPlantToFarmScreenState extends State<AddPlantToFarmScreen> {
             Provider.of<FarmStore>(context, listen: false)
                 .getAllFarms(context, token)
           ]).whenComplete(() {
-            setState(() {
-              _isLoading = false;
-            });
             Navigator.of(context).pop();
           });
         }
+        setState(() {
+          _isLoading = false;
+        });
       });
     } catch (e) {
       AppPopup.showMyDialog(context, e.toString());

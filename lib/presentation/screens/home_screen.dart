@@ -158,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   fontSize: 23),
                             ),
                             Text(
-                              '${context.read<FarmStore>().allFarms.length} places',
+                              '${context.watch<FarmStore>().allFarms.length} places',
                               style: TextStyle(
                                   color: Colors.green.shade300,
                                   fontWeight: FontWeight.w700,

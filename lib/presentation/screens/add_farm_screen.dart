@@ -45,12 +45,12 @@ class _AddFarmScreenState extends State<AddFarmScreen> {
           Provider.of<FarmStore>(context, listen: false)
               .getAllFarms(context, token)
               .then((value) {
-            setState(() {
-              _isLoading = false;
-            });
             Navigator.of(context).pop();
           });
         }
+        setState(() {
+          _isLoading = false;
+        });
       });
     } catch (e) {
       AppPopup.showMyDialog(context, e.toString());

@@ -4,7 +4,7 @@ class SensorsReadings {
   double tTemp;
   double eTemp;
   double eCo2;
-  int lightLvl;
+  double lightLvl;
   double eHumidity;
   double tWaterLvl;
   double tPh;
@@ -24,16 +24,17 @@ class SensorsReadings {
 
   factory SensorsReadings.fromJson(Map<String, dynamic> json) =>
       SensorsReadings(
-          eCo2: json['E_co2'],
-          eHumidity: json['E_humidity'],
-          eTemp: json['E_temperature'],
-          id: json['_id'],
-          lightLvl: json['E_lightLVL'],
-          serialNumber: json['serialNumber'],
-          tEc: json['T_EC'],
-          tPh: json['T_PH'],
-          tTemp: json['T_temperature'],
-          tWaterLvl: json['T_Waterlvl']);
+        id: json['_id'],
+        serialNumber: json['serialNumber'],
+        tTemp: json['T_temperature'],
+        eTemp: json['E_temperature'],
+        eCo2: json['E_co2'],
+        lightLvl: json['E_lightLVL'],
+        eHumidity: json['E_humidity'],
+        tWaterLvl: json['T_Waterlvl'],
+        tPh: json['T_PH'],
+        tEc: json['T_EC'],
+      );
 }
 
     // {

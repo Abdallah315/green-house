@@ -31,7 +31,7 @@ class PlantContainer extends StatelessWidget {
                   Text(
                     '${plant.name} Plant',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w700,
                       color: myDarkGreen,
                     ),
@@ -55,7 +55,7 @@ class PlantContainer extends StatelessWidget {
                   Text(
                     'Harvesting in',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w700,
                       color: myDarkGreen,
                     ),

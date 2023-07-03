@@ -39,17 +39,19 @@ class _SensorReadingsScreenState extends State<SensorReadingsScreen> {
     });
   }
 
-  updateReadings() {
-    _timer = Timer.periodic(const Duration(seconds: 1, milliseconds: 500), (_) {
-      print('data got updated');
+  updateReadings() async {
+    final token = await Provider.of<Auth>(context, listen: false).getToken();
+    _timer = Timer.periodic(const Duration(seconds: 3, milliseconds: 500), (_) {
+      Provider.of<FarmStore>(context, listen: false)
+          .getSensorsReadings(context, token, widget.args['serialNumber']);
+      print('updated');
     });
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
     _timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -191,279 +193,287 @@ class _SensorReadingsScreenState extends State<SensorReadingsScreen> {
   }
 
   buildSensorReadings() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
+    return Consumer<FarmStore>(
+      builder: (context, farmStore, child) {
+        var readings = farmStore.sensorsReadings;
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
-                Image.asset(
-                  'assets/images/hot.png',
-                  width: 50,
-                  height: 50,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Column(
+                Row(
                   children: [
-                    Text(
-                      'Farm temp',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.grey),
+                    Image.asset(
+                      'assets/images/hot.png',
+                      width: 50,
+                      height: 50,
                     ),
-                    Text(
-                      '50',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          'Farm temp',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.grey),
+                        ),
+                        Text(
+                          readings?.eTemp.toDouble().toStringAsFixed(2) ?? '0',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black),
+                        )
+                      ],
                     )
                   ],
-                )
+                ),
+                const Spacer(),
+                Row(
+                  children: [
+                    Image.asset(
+                      'assets/images/water-temperature.png',
+                      width: 50,
+                      height: 50,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          'Water temp',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.grey),
+                        ),
+                        Text(
+                          readings?.tTemp.toDouble().toStringAsFixed(2) ?? '0',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black),
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ],
             ),
-            const Spacer(),
+            SizedBox(
+              height: getHeight(context) * 0.05,
+            ),
             Row(
               children: [
-                Image.asset(
-                  'assets/images/water-temperature.png',
-                  width: 50,
-                  height: 50,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Column(
+                Row(
                   children: [
-                    Text(
-                      'Water temp',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.grey),
+                    Image.asset(
+                      'assets/images/metering.png',
+                      width: 50,
+                      height: 50,
                     ),
-                    Text(
-                      '120',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          'Farm Co2',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.grey),
+                        ),
+                        Text(
+                          readings?.eCo2.toDouble().toStringAsFixed(2) ?? '0',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black),
+                        )
+                      ],
                     )
                   ],
-                )
+                ),
+                const Spacer(),
+                Row(
+                  children: [
+                    Image.asset(
+                      'assets/images/light-bulb.png',
+                      width: 50,
+                      height: 50,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          'Light Level',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.grey),
+                        ),
+                        Text(
+                          readings?.lightLvl.toDouble().toStringAsFixed(2) ??
+                              '0',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black),
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ],
             ),
+            SizedBox(
+              height: getHeight(context) * 0.05,
+            ),
+            Row(
+              children: [
+                Row(
+                  children: [
+                    Image.asset(
+                      'assets/images/humidity.png',
+                      width: 50,
+                      height: 50,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          'Farm humidity',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.grey),
+                        ),
+                        Text(
+                          readings?.eHumidity.toDouble().toStringAsFixed(2) ??
+                              '0',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+                const Spacer(),
+                Row(
+                  children: [
+                    Image.asset(
+                      'assets/images/sea-level.png',
+                      width: 50,
+                      height: 50,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          'Water Level',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.grey),
+                        ),
+                        Text(
+                          readings?.tWaterLvl.toDouble().toStringAsFixed(2) ??
+                              '0',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(
+              height: getHeight(context) * 0.05,
+            ),
+            Row(
+              children: [
+                Row(
+                  children: [
+                    Image.asset(
+                      'assets/images/ph.png',
+                      width: 50,
+                      height: 50,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          'Water PH',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.grey),
+                        ),
+                        Text(
+                          readings?.tPh.toDouble().toStringAsFixed(2) ?? '0',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+                const Spacer(),
+                Row(
+                  children: [
+                    Image.asset(
+                      'assets/images/conductivity.png',
+                      width: 50,
+                      height: 50,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          'Water EC',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.grey),
+                        ),
+                        Text(
+                          readings?.tEc.toDouble().toStringAsFixed(2) ?? '0',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            )
           ],
-        ),
-        SizedBox(
-          height: getHeight(context) * 0.05,
-        ),
-        Row(
-          children: [
-            Row(
-              children: [
-                Image.asset(
-                  'assets/images/metering.png',
-                  width: 50,
-                  height: 50,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Column(
-                  children: [
-                    Text(
-                      'Farm Co2',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.grey),
-                    ),
-                    Text(
-                      '50',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black),
-                    )
-                  ],
-                )
-              ],
-            ),
-            const Spacer(),
-            Row(
-              children: [
-                Image.asset(
-                  'assets/images/light-bulb.png',
-                  width: 50,
-                  height: 50,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Column(
-                  children: [
-                    Text(
-                      'Light Level',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.grey),
-                    ),
-                    Text(
-                      '120',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ],
-        ),
-        SizedBox(
-          height: getHeight(context) * 0.05,
-        ),
-        Row(
-          children: [
-            Row(
-              children: [
-                Image.asset(
-                  'assets/images/humidity.png',
-                  width: 50,
-                  height: 50,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Column(
-                  children: [
-                    Text(
-                      'Farm humidity',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.grey),
-                    ),
-                    Text(
-                      '50',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black),
-                    )
-                  ],
-                )
-              ],
-            ),
-            const Spacer(),
-            Row(
-              children: [
-                Image.asset(
-                  'assets/images/sea-level.png',
-                  width: 50,
-                  height: 50,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Column(
-                  children: [
-                    Text(
-                      'Water Level',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.grey),
-                    ),
-                    Text(
-                      '120',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ],
-        ),
-        SizedBox(
-          height: getHeight(context) * 0.05,
-        ),
-        Row(
-          children: [
-            Row(
-              children: [
-                Image.asset(
-                  'assets/images/ph.png',
-                  width: 50,
-                  height: 50,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Column(
-                  children: [
-                    Text(
-                      'Water PH',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.grey),
-                    ),
-                    Text(
-                      '50',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black),
-                    )
-                  ],
-                )
-              ],
-            ),
-            const Spacer(),
-            Row(
-              children: [
-                Image.asset(
-                  'assets/images/conductivity.png',
-                  width: 50,
-                  height: 50,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Column(
-                  children: [
-                    Text(
-                      'Water EC',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.grey),
-                    ),
-                    Text(
-                      '120',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ],
-        )
-      ],
+        );
+      },
     );
   }
 }
