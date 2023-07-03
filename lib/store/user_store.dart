@@ -16,7 +16,7 @@ class UserStore with ChangeNotifier {
         Uri.parse('$baseUrl/users/getUser'),
         headers: {'Authorization': 'Bearer $token'},
       );
-      print(response.body);
+      // print(response.body);
 
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);

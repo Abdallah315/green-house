@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:green_house/store/auth.dart';
@@ -23,6 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void getAllUserPlants() async {
     isloading = true;
     String token = await Provider.of<Auth>(context, listen: false).getToken();
+    if (!mounted) return;
     Provider.of<UserStore>(context, listen: false)
         .getUserData(context, token)
         .then((value) {
@@ -82,30 +84,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   Column(
                     children: [
-                      Container(
-                        width: getWidth(context) * .96,
-                        height: getHeight(context) * 0.08,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.white,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                  'assets/images/notification.svg'),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              const Text(
-                                'Notification',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
+                      GestureDetector(
+                        onTap: () async {
+                          AppSettings.openNotificationSettings();
+                        },
+                        child: Container(
+                          width: getWidth(context) * .96,
+                          height: getHeight(context) * 0.08,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.white,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                    'assets/images/notification.svg'),
+                                const SizedBox(
+                                  width: 20,
                                 ),
-                              )
-                            ],
+                                const Text(
+                                  'Notification',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),

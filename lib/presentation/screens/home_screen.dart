@@ -21,6 +21,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isloading = false;
+  final TextEditingController _controller = TextEditingController();
+  List<Farm>? filteredList;
 
   @override
   void initState() {
@@ -126,6 +128,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             validator: (value) {
                               return null;
                             },
+                            controller: _controller,
+                            onChanged: (value) {
+                              filteredList =
+                                  Provider.of<FarmStore>(context, listen: false)
+                                      .allFarms;
+                              filteredList = filteredList
+                                  ?.where((element) =>
+                                      element.name.contains(_controller.text))
+                                  .toList();
+                              setState(() {});
+                            },
                             onSaved: (value) {
                               // _authData['firstName'] = value.toString();
                             },
@@ -195,31 +208,101 @@ class _HomeScreenState extends State<HomeScreen> {
                     : Positioned(
                         top: 200,
                         child: SizedBox(
-                            width: getWidth(context),
-                            height: getHeight(context) * .65,
-                            child: Consumer<FarmStore>(
-                                builder: (context, farmStore, child) {
+                          width: getWidth(context),
+                          height: getHeight(context) * .65,
+                          child: Consumer<FarmStore>(
+                            builder: (context, farmStore, child) {
                               return ListView.builder(
-                                itemBuilder: (context, index) {
-                                  Farm farm = farmStore.allFarms[index];
-                                  return buildFarmComponent(context, farm.name,
-                                      farm.plants.length.toString());
-                                },
-                                itemCount: farmStore.allFarms.length,
-                              );
-                            })),
-                      )
-              ]
+                                  itemBuilder: (context, index) {
+                                    if (index == farmStore.allFarms.length) {
+                                      return Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () => PersistentNavBarNavigator
+                                                .pushNewScreen(context,
+                                                    screen:
+                                                        const AddFarmScreen(),
+                                                    pageTransitionAnimation:
+                                                        PageTransitionAnimation
+                                                            .cupertino),
+                                            child: Center(
+                                              child: Container(
+                                                  width: getWidth(context) * .8,
+                                                  height:
+                                                      getHeight(context) * .2,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30),
+                                                      color: Colors.white,
+                                                      border: Border.all(
+                                                          color: Colors
+                                                              .grey.shade400)),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.add,
+                                                        size: 120,
+                                                        color: Colors
+                                                            .grey.shade400,
+                                                      ),
+                                                      Text(
+                                                        'Add Farm',
+                                                        style: TextStyle(
+                                                            color: Colors
+                                                                .grey.shade400,
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w700),
+                                                      )
+                                                    ],
+                                                  )),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          )
+                                        ],
+                                      );
+                                    } else {
+                                      Farm farm = _controller.text.isEmpty
+                                          ? farmStore.allFarms[index]
+                                          : filteredList![index];
+                                      return buildFarmComponent(
+                                          context,
+                                          farm.name,
+                                          farm.plants.length.toString(),
+                                          farmStore
+                                              .allFarms[index].serialNumber);
+                                    }
+                                  },
+                                  itemCount: _controller.text.isEmpty
+                                      ? farmStore.allFarms.length + 1
+                                      : filteredList!.length);
+                            },
+                          ),
+                        ),
+                      ),
+              ],
             ],
           ),
         ));
   }
 
-  Widget buildFarmComponent(
-      BuildContext context, String title, String plantsNumber) {
+  Widget buildFarmComponent(BuildContext context, String title,
+      String plantsNumber, String serialNumber) {
     return GestureDetector(
       onTap: () => PersistentNavBarNavigator.pushNewScreen(context,
-          screen: const InfoScreen(),
+          screen: InfoScreen(args: {
+            'serialNumber': serialNumber,
+          }),
+          // settings: RouteSettings(arguments: {
+          //   'serialNumber': serialNumber,
+          // }),
           pageTransitionAnimation: PageTransitionAnimation.cupertino),
       child: Column(
         children: [
@@ -251,7 +334,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(
             height: 10,
-          )
+          ),
         ],
       ),
     );

@@ -45,9 +45,12 @@ class _AddPlantToFarmScreenState extends State<AddPlantToFarmScreen> {
               token: token)
           .then((value) {
         if (value) {
-          Provider.of<FarmStore>(context, listen: false)
-              .getAllFarmPlants(context, token, _authData['serialNumber']!)
-              .then((value) {
+          Future.wait([
+            Provider.of<FarmStore>(context, listen: false)
+                .getAllFarmPlants(context, token, _authData['serialNumber']!),
+            Provider.of<FarmStore>(context, listen: false)
+                .getAllFarms(context, token)
+          ]).whenComplete(() {
             setState(() {
               _isLoading = false;
             });

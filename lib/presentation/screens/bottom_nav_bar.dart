@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:green_house/presentation/screens/control_screen.dart';
-import 'package:green_house/presentation/screens/info_screen.dart';
 import 'package:green_house/utils/constants.dart';
 import 'package:lottie/lottie.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -74,9 +71,10 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
     return [
       // const AddPlantToFarmScreen(),
       const HomeScreen(),
-      const ControlScreen(),
+
+      // const ControlScreen(),
       const CameraScreen(),
-      const InfoScreen(),
+      // const InfoScreen(),
       const ProfileScreen(),
     ];
   }
@@ -88,11 +86,11 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
           title: "Home",
           activeColorPrimary: myLightGreen,
           inactiveColorPrimary: Colors.grey),
-      PersistentBottomNavBarItem(
-          icon: const FaIcon(FontAwesomeIcons.sliders),
-          title: ("Control"),
-          activeColorPrimary: myLightGreen,
-          inactiveColorPrimary: Colors.grey),
+      // PersistentBottomNavBarItem(
+      //     icon: const FaIcon(FontAwesomeIcons.sliders),
+      //     title: ("Control"),
+      //     activeColorPrimary: myLightGreen,
+      //     inactiveColorPrimary: Colors.grey),
       PersistentBottomNavBarItem(
           icon: InkWell(
             onTap: scanQr,
@@ -106,11 +104,11 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
           ),
           activeColorPrimary: const Color(0xff1F3724),
           inactiveColorPrimary: Colors.grey),
-      PersistentBottomNavBarItem(
-          icon: const Icon(Icons.info_outline),
-          title: ("Info"),
-          activeColorPrimary: myLightGreen,
-          inactiveColorPrimary: Colors.grey),
+      // PersistentBottomNavBarItem(
+      //     icon: const Icon(Icons.info_outline),
+      //     title: ("Info"),
+      //     activeColorPrimary: myLightGreen,
+      //     inactiveColorPrimary: Colors.grey),
       PersistentBottomNavBarItem(
           icon: const Icon(Icons.person_2_outlined),
           title: ("Profile"),

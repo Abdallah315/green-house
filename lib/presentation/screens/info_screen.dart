@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:green_house/models/plant.dart';
 import 'package:green_house/presentation/screens/add_plant_to_farm_screen.dart';
+import 'package:green_house/presentation/screens/sensor_readings_screen.dart';
 import 'package:green_house/presentation/widgets/plant_container.dart';
 import 'package:green_house/store/auth.dart';
 import 'package:green_house/utils/constants.dart';
@@ -10,7 +11,8 @@ import 'package:provider/provider.dart';
 import '../../store/farms.dart';
 
 class InfoScreen extends StatefulWidget {
-  const InfoScreen({super.key});
+  final Map<String, dynamic> args;
+  const InfoScreen({super.key, required this.args});
   static const routeName = '/info';
 
   @override
@@ -28,8 +30,10 @@ class _InfoScreenState extends State<InfoScreen> {
   void getAllUserPlants() async {
     isloading = true;
     String token = await Provider.of<Auth>(context, listen: false).getToken();
+    print(widget.args);
+    if (!mounted) return;
     Provider.of<FarmStore>(context, listen: false)
-        .getAllFarmPlants(context, token, '')
+        .getAllFarmPlants(context, token, widget.args['serialNumber'])
         .then((value) {
       setState(() {
         isloading = false;
@@ -69,7 +73,13 @@ class _InfoScreenState extends State<InfoScreen> {
                   SizedBox(
                     height: getHeight(context) * .02,
                   ),
-                  buildFarmData(context),
+                  GestureDetector(
+                      onTap: () => PersistentNavBarNavigator.pushNewScreen(
+                          context,
+                          screen: SensorReadingsScreen(args: widget.args),
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.cupertino),
+                      child: buildFarmData(context)),
                   SizedBox(
                     height: getHeight(context) * .04,
                   ),
