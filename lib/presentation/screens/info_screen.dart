@@ -165,7 +165,7 @@ class _InfoScreenState extends State<InfoScreen> {
                 height: 15,
               ),
               Text(
-                readings?.eTemp.toDouble().toStringAsFixed(2) ?? '0',
+                readings?.eTemp.toStringAsFixed(2) ?? '0',
               )
             ],
           ),
@@ -180,7 +180,7 @@ class _InfoScreenState extends State<InfoScreen> {
               const SizedBox(
                 height: 15,
               ),
-              Text(readings?.tTemp.toDouble().toStringAsFixed(2) ?? '0')
+              Text(readings?.tTemp.toStringAsFixed(2) ?? '0')
             ],
           ),
           Column(
@@ -194,7 +194,7 @@ class _InfoScreenState extends State<InfoScreen> {
               const SizedBox(
                 height: 15,
               ),
-              Text(readings?.tEc.toDouble().toStringAsFixed(2) ?? '0')
+              Text(readings?.tEc.toStringAsFixed(2) ?? '0')
             ],
           ),
         ]);

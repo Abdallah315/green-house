@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:green_house/presentation/screens/control_screen.dart';
 import 'package:green_house/store/auth.dart';
 import 'package:green_house/store/farms.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/constants.dart';
@@ -112,6 +114,28 @@ class _SensorReadingsScreenState extends State<SensorReadingsScreen> {
                       color: Colors.grey.shade700,
                     ),
                     textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: myDarkGreen,
+                      fixedSize: Size(MediaQuery.of(context).size.width * 0.9,
+                          MediaQuery.of(context).size.height * 0.06),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(35),
+                      ),
+                    ),
+                    onPressed: () {
+                      PersistentNavBarNavigator.pushNewScreen(context,
+                          screen: ControlScreen(args: widget.args));
+                    },
+                    // Navigator.of(ctx, rootNavigator: true).pop(),
+                    child: const Text(
+                      "Control Your Farm",
+                      style: TextStyle(fontSize: 15, color: Colors.white),
+                    ),
                   )
                 ],
               ),
@@ -221,7 +245,7 @@ class _SensorReadingsScreenState extends State<SensorReadingsScreen> {
                               color: Colors.grey),
                         ),
                         Text(
-                          readings?.eTemp.toDouble().toStringAsFixed(2) ?? '0',
+                          readings?.eTemp.toStringAsFixed(2) ?? '0',
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
@@ -252,7 +276,7 @@ class _SensorReadingsScreenState extends State<SensorReadingsScreen> {
                               color: Colors.grey),
                         ),
                         Text(
-                          readings?.tTemp.toDouble().toStringAsFixed(2) ?? '0',
+                          readings?.tTemp.toStringAsFixed(2) ?? '0',
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
@@ -289,7 +313,7 @@ class _SensorReadingsScreenState extends State<SensorReadingsScreen> {
                               color: Colors.grey),
                         ),
                         Text(
-                          readings?.eCo2.toDouble().toStringAsFixed(2) ?? '0',
+                          readings?.eCo2.toStringAsFixed(2) ?? '0',
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
@@ -320,8 +344,7 @@ class _SensorReadingsScreenState extends State<SensorReadingsScreen> {
                               color: Colors.grey),
                         ),
                         Text(
-                          readings?.lightLvl.toDouble().toStringAsFixed(2) ??
-                              '0',
+                          readings?.lightLvl.toStringAsFixed(2) ?? '0',
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
@@ -358,8 +381,9 @@ class _SensorReadingsScreenState extends State<SensorReadingsScreen> {
                               color: Colors.grey),
                         ),
                         Text(
-                          readings?.eHumidity.toDouble().toStringAsFixed(2) ??
-                              '0',
+                          readings?.eHumidity.toStringAsFixed(2) == null
+                              ? '0'
+                              : '${readings?.eHumidity.toStringAsFixed(2)} %',
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
@@ -390,8 +414,7 @@ class _SensorReadingsScreenState extends State<SensorReadingsScreen> {
                               color: Colors.grey),
                         ),
                         Text(
-                          readings?.tWaterLvl.toDouble().toStringAsFixed(2) ??
-                              '0',
+                          readings?.tWaterLvl.toStringAsFixed(2) ?? '0',
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
@@ -428,7 +451,7 @@ class _SensorReadingsScreenState extends State<SensorReadingsScreen> {
                               color: Colors.grey),
                         ),
                         Text(
-                          readings?.tPh.toDouble().toStringAsFixed(2) ?? '0',
+                          readings?.tPh.toStringAsFixed(2) ?? '0',
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
@@ -459,7 +482,7 @@ class _SensorReadingsScreenState extends State<SensorReadingsScreen> {
                               color: Colors.grey),
                         ),
                         Text(
-                          readings?.tEc.toDouble().toStringAsFixed(2) ?? '0',
+                          readings?.tEc.toStringAsFixed(2) ?? '0',
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,

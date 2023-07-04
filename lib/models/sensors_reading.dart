@@ -1,14 +1,14 @@
 class SensorsReadings {
   String id;
   String serialNumber;
-  double tTemp;
-  double eTemp;
-  double eCo2;
-  double lightLvl;
-  double eHumidity;
-  double tWaterLvl;
-  double tPh;
-  double tEc;
+  dynamic tTemp;
+  dynamic eTemp;
+  dynamic eCo2;
+  dynamic lightLvl;
+  dynamic eHumidity;
+  dynamic tWaterLvl;
+  dynamic tPh;
+  dynamic tEc;
 
   SensorsReadings(
       {required this.eCo2,
