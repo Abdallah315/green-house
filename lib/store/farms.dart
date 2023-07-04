@@ -160,4 +160,32 @@ class FarmStore with ChangeNotifier {
       AppPopup.showMyDialog(context, e.toString());
     }
   }
+
+  Future<bool> farmControl(BuildContext context, String serialNumber,
+      bool isAuto, String device, String state) async {
+    try {
+      Response response = await post(
+        Uri.parse('https://sfc.onrender.com/data/manualControl/'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'isAuto': isAuto,
+          'serialNumber': serialNumber,
+          'device': device,
+          'state': state,
+        }),
+      );
+      print({'$serialNumber  $device  $state '});
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        AppPopup.showMyDialog(context, response.body.toString());
+        return false;
+      }
+    } catch (e) {
+      AppPopup.showMyDialog(context, e.toString());
+
+      return false;
+    }
+  }
 }

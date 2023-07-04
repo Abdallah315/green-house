@@ -155,7 +155,7 @@ class _SensorReadingsScreenState extends State<SensorReadingsScreen> {
             color: myDarkGreen,
             borderRadius: BorderRadius.circular(25),
           ),
-          child: const Padding(
+          child: Padding(
             padding: EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

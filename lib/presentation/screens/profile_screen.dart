@@ -1,9 +1,11 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:green_house/presentation/screens/history_screen.dart';
 import 'package:green_house/store/auth.dart';
 import 'package:green_house/store/user_store.dart';
 import 'package:green_house/utils/constants.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -82,75 +84,82 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(
                     height: getHeight(context) * .08,
                   ),
-                  Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () async {
-                          AppSettings.openNotificationSettings();
-                        },
-                        child: Container(
-                          width: getWidth(context) * .96,
-                          height: getHeight(context) * 0.08,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.white,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                    'assets/images/notification.svg'),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                const Text(
-                                  'Notification',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                )
-                              ],
+                  Align(
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            AppSettings.openNotificationSettings();
+                          },
+                          child: Container(
+                            width: getWidth(context) * .96,
+                            height: getHeight(context) * 0.08,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.white,
                             ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        width: getWidth(context) * .96,
-                        height: getHeight(context) * 0.08,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.white,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset('assets/images/help.svg'),
-                              const SizedBox(
-                                width: 20,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                      'assets/images/notification.svg'),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  const Text(
+                                    'Notification',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  )
+                                ],
                               ),
-                              const Text(
-                                'Help',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              )
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      GestureDetector(
-                        onTap: () => context.read<Auth>().logout(),
-                        child: Container(
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            PersistentNavBarNavigator.pushNewScreen(context,
+                                screen: HistoryScreen());
+                          },
+                          child: Container(
+                            width: getWidth(context) * .96,
+                            height: getHeight(context) * 0.08,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.white,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                      'assets/images/settings.svg'),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  const Text(
+                                    'History',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
                           width: getWidth(context) * .96,
                           height: getHeight(context) * 0.08,
                           decoration: BoxDecoration(
@@ -161,12 +170,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
-                                SvgPicture.asset('assets/images/logout.svg'),
+                                SvgPicture.asset('assets/images/help.svg'),
                                 const SizedBox(
                                   width: 20,
                                 ),
                                 const Text(
-                                  'Logout',
+                                  'Help',
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w700,
@@ -176,8 +185,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                         ),
-                      )
-                    ],
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        GestureDetector(
+                          onTap: () => context.read<Auth>().logout(),
+                          child: Container(
+                            width: getWidth(context) * .96,
+                            height: getHeight(context) * 0.08,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.white,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset('assets/images/logout.svg'),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  const Text(
+                                    'Logout',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),
