@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:green_house/presentation/screens/bottom_nav_bar.dart';
 import 'package:green_house/utils/constants.dart';
 import 'package:provider/provider.dart';
 
-import '../../bussiness_logic/auth.dart';
+import '../../store/auth.dart';
 
 enum AuthMode { signUp, login }
 
@@ -74,41 +73,41 @@ class _AuthScreenState extends State<AuthScreen> {
     'password': '',
     'confirmPassword': ''
   };
-  final _isLoading = false;
+  bool _isLoading = false;
   final _passwordController = TextEditingController();
 
-  // Future<void> _submit() async {
-  //   if (!_formKey.currentState!.validate()) {
-  //     return;
-  //   }
-  //   _formKey.currentState!.save();
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-  //   try {
-  //     if (_authMode == AuthMode.login) {
-  //       await Provider.of<Auth>(context, listen: false).login(
-  //           context: context,
-  //           email: _authData['email'].toString(),
-  //           password: _authData['password'].toString());
-  //     } else {
-  //       await Provider.of<Auth>(context, listen: false).register(
-  //           context: context,
-  //           firstName: _authData['firstName'].toString(),
-  //           lastName: _authData['lastName'].toString(),
-  //           phoneNumber: _authData['phoneNumber'].toString(),
-  //           country: _authData['country'].toString(),
-  //           email: _authData['email'].toString(),
-  //           password: _authData['password'].toString(),
-  //           confirmPassword: _authData['confirmPassword'].toString());
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //   setState(() {
-  //     _isLoading = false;
-  //   });
-  // }
+  Future<void> _submit() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    _formKey.currentState!.save();
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      if (_authMode == AuthMode.login) {
+        await Provider.of<Auth>(context, listen: false).login(
+            context: context,
+            email: _authData['email'].toString(),
+            password: _authData['password'].toString());
+      } else {
+        await Provider.of<Auth>(context, listen: false).register(
+            context: context,
+            firstName: _authData['firstName'].toString(),
+            lastName: _authData['lastName'].toString(),
+            phoneNumber: _authData['phoneNumber'].toString(),
+            country: _authData['country'].toString(),
+            email: _authData['email'].toString(),
+            password: _authData['password'].toString(),
+            confirmPassword: _authData['confirmPassword'].toString());
+      }
+    } catch (e) {
+      print(e);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   void _switchAuthMode() {
     if (_authMode == AuthMode.login) {
@@ -213,7 +212,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                         fontWeight: FontWeight.bold,
                                         color: lastName.hasFocus
                                             ? Colors.black.withOpacity(0.9)
-                                            : myDarkGreen),
+                                            : Colors.white),
                                     decoration: InputDecoration(
                                       filled: true,
                                       fillColor: Colors.white.withOpacity(.45),
@@ -264,7 +263,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 fontWeight: FontWeight.bold,
                                 color: emailFocus.hasFocus
                                     ? Colors.black.withOpacity(0.9)
-                                    : myDarkGreen),
+                                    : Colors.white),
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                               filled: true,
@@ -313,7 +312,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   fontWeight: FontWeight.bold,
                                   color: phoneNumber.hasFocus
                                       ? Colors.black.withOpacity(0.9)
-                                      : myDarkGreen),
+                                      : Colors.white),
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
                                 filled: true,
@@ -362,7 +361,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   fontWeight: FontWeight.bold,
                                   color: country.hasFocus
                                       ? Colors.black.withOpacity(0.9)
-                                      : myDarkGreen),
+                                      : Colors.white),
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
                                 filled: true,
@@ -410,7 +409,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 fontWeight: FontWeight.bold,
                                 color: passwordFocus.hasFocus
                                     ? Colors.black.withOpacity(0.9)
-                                    : myDarkGreen),
+                                    : Colors.white),
                             controller: _passwordController,
                             decoration: InputDecoration(
                               filled: true,
@@ -459,7 +458,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   fontWeight: FontWeight.bold,
                                   color: confirmPasswordFocus.hasFocus
                                       ? Colors.black.withOpacity(0.9)
-                                      : myDarkGreen),
+                                      : Colors.white),
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: Colors.white.withOpacity(.45),
@@ -506,11 +505,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           else
                             GestureDetector(
                               // ! ADD submit here
-                              onTap: () =>
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    const BottomNavBarScreen(),
-                              )),
+                              onTap: _submit,
                               child: Container(
                                 width: getWidth(context),
                                 height: getHeight(context) * 0.07,

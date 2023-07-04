@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1092342696451",
+    "project_id": "greenhouse-ef892",
+    "storage_bucket": "greenhouse-ef892.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092342696451:android:f2c13d5260b16b02da9c36",
+        "android_client_info": {
+          "package_name": "com.example.green_house"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092342696451-ip1l15hsc3eau6jdq7knqfot2s3ob3sn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzD-VadZufWPH3s8DhynUwo_aj_Z56OuY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092342696451-ip1l15hsc3eau6jdq7knqfot2s3ob3sn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
