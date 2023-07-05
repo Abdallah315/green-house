@@ -90,6 +90,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   GestureDetector(
                       onTap: () => PersistentNavBarNavigator.pushNewScreen(
                           context,
+                          withNavBar: false,
                           screen: SensorReadingsScreen(args: widget.args),
                           pageTransitionAnimation:
                               PageTransitionAnimation.cupertino),
@@ -108,10 +109,12 @@ class _InfoScreenState extends State<InfoScreen> {
                             fontSize: 18),
                       ),
                       GestureDetector(
-                        onTap: () => PersistentNavBarNavigator.pushNewScreen(
-                            context,
-                            withNavBar: false,
-                            screen: const AddPlantToFarmScreen()),
+                        onTap: () =>
+                            PersistentNavBarNavigator.pushNewScreen(context,
+                                withNavBar: false,
+                                screen: AddPlantToFarmScreen(
+                                  args: widget.args,
+                                )),
                         child: const Icon(
                           Icons.add,
                           size: 30,

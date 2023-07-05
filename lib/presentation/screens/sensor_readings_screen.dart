@@ -129,7 +129,8 @@ class _SensorReadingsScreenState extends State<SensorReadingsScreen> {
                     ),
                     onPressed: () {
                       PersistentNavBarNavigator.pushNewScreen(context,
-                          screen: ControlScreen(args: widget.args));
+                          screen: ControlScreen(args: widget.args),
+                          withNavBar: false);
                     },
                     // Navigator.of(ctx, rootNavigator: true).pop(),
                     child: const Text(

@@ -9,7 +9,9 @@ import 'package:green_house/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 class AddPlantToFarmScreen extends StatefulWidget {
-  const AddPlantToFarmScreen({Key? key}) : super(key: key);
+  final Map<String, dynamic> args;
+
+  const AddPlantToFarmScreen({Key? key, required this.args}) : super(key: key);
   static const routName = '/add-plant-screen';
 
   @override
@@ -18,11 +20,7 @@ class AddPlantToFarmScreen extends StatefulWidget {
 
 class _AddPlantToFarmScreenState extends State<AddPlantToFarmScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  final Map<String, String> _authData = {
-    'name': '',
-    'serialNumber': '',
-    'plantsCount': ''
-  };
+  final Map<String, String> _authData = {'name': '', 'plantsCount': ''};
   bool _isLoading = false;
 
   Future<void> _submit() async {
@@ -40,19 +38,17 @@ class _AddPlantToFarmScreenState extends State<AddPlantToFarmScreen> {
           .addPlantToFarm(
               context: context,
               plantName: _authData['name'].toString(),
-              serialNumber: _authData['serialNumber'].toString(),
+              serialNumber: widget.args['serialNumber'].toString(),
               plantsCount: _authData['plantsCount'].toString(),
               token: token)
           .then((value) {
         if (value) {
           Future.wait([
             Provider.of<FarmStore>(context, listen: false)
-                .getAllFarmPlants(context, token, _authData['serialNumber']!),
+                .getAllFarmPlants(context, token, widget.args['serialNumber']!),
             Provider.of<FarmStore>(context, listen: false)
                 .getAllFarms(context, token)
-          ]).whenComplete(() {
-            Navigator.of(context).pop();
-          });
+          ]).then((value) => Navigator.of(context).pop());
         }
         setState(() {
           _isLoading = false;
@@ -133,45 +129,6 @@ class _AddPlantToFarmScreenState extends State<AddPlantToFarmScreen> {
                             },
                             onSaved: (value) {
                               _authData['name'] = value.toString();
-                            },
-                          ),
-                          SizedBox(
-                            height: getHeight(context) * 0.02,
-                          ),
-                          TextFormField(
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: myDarkGreen),
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white.withOpacity(.45),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                  borderSide: const BorderSide(
-                                    width: 3,
-                                  )),
-                              hintText: 'Serial Number',
-                              prefixIcon: Icon(
-                                Icons.email,
-                                color: myDarkGreen,
-                                size: 28,
-                              ),
-                              hintStyle: TextStyle(color: myDarkGreen),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                  borderSide: const BorderSide(
-                                    width: 0,
-                                  )),
-                            ),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Invalid Serial Number';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _authData['serialNumber'] = value.toString();
                             },
                           ),
                           SizedBox(

@@ -177,6 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: GestureDetector(
                           onTap: () => PersistentNavBarNavigator.pushNewScreen(
                               context,
+                              withNavBar: false,
                               screen: const AddFarmScreen(),
                               pageTransitionAnimation:
                                   PageTransitionAnimation.cupertino),
@@ -300,6 +301,7 @@ class _HomeScreenState extends State<HomeScreen> {
           screen: InfoScreen(args: {
             'serialNumber': serialNumber,
           }),
+          withNavBar: false,
           // settings: RouteSettings(arguments: {
           //   'serialNumber': serialNumber,
           // }),

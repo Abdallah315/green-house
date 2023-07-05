@@ -50,6 +50,7 @@ dependencies:
   permission_handler: ^10.4.1
   firebase_core: ^2.14.0
   firebase_messaging: ^14.6.4
+  url_launcher:
   app_settings: ^4.2.0
 
 dev_dependencies:
